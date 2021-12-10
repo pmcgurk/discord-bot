@@ -1,5 +1,6 @@
 // Import discord.js and create the client
 const Discord = require('discord.js');
+require('dotenv').config()
 
 const { Client, Intents } = require('discord.js');
 
@@ -17,3 +18,5 @@ client.on('messageCreate', async msg => {
     msg.reply("world!")
   }
 })
+
+client.login(process.env.TOKEN);
