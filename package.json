@@ -1,0 +1,7 @@
+{
+  "name": "discord",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Paul",
+  "license": "MIT"
+}
