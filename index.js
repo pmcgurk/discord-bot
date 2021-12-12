@@ -32,7 +32,7 @@ client.on('messageCreate', async (msg) => {
           }
         }
       } else {
-        splitMessage.map(async word => checkPhrases(msg, word.toLowerCase()));
+        splitMessage.map(word => checkPhrases(msg, word.toLowerCase()));
         await checkSentiment(msg);
       }
     }

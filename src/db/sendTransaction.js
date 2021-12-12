@@ -1,9 +1,7 @@
-import { transaction } from 'objection';
 import Transaction from '../models/transaction';
-import User from '../models/user';
+import updateBalance from '../db/updateBalance';
 import getUser from './getUser';
-
-const constants = '../constants';
+import constants from '../constants';
 
 export default async function sendTransaction(SenderId, ReceiverId, amount, note) {
   try {
@@ -24,13 +22,10 @@ export default async function sendTransaction(SenderId, ReceiverId, amount, note
     if (sender.amount - amountParsed < 0) {
       throw new Error('Hahaha ye dinnae hiv enoughhh');
     }
-    const receiver = await getUser(ReceiverId);
-    const trx = await transaction.start(User);
-    await User.query(trx).patchAndFetchById(sender.id, { amount: sender.amount - amountParsed });
-    await User.query(trx).patchAndFetchById(receiver.id, { amount: receiver.amount + amountParsed });
-    await Transaction.query(trx).insert({ SenderId: sender.id, ReceiverId: receiver.id, amount, note });
-    await trx.commit();
-    return { senderAmount: sender.amount - amountParsed, receiverAmount: receiver.amount + amountParsed };
+    const updatedSender = await updateBalance(SenderId, -amountParsed);
+    const updatedReceiver = await updateBalance(ReceiverId, amountParsed);
+    await Transaction.query().insert({ SenderId: sender.id, ReceiverId, amount, note });
+    return { senderAmount: updatedSender.amount, receiverAmount: updatedReceiver.amount };
   } catch (error) {
     return { error };
   }
