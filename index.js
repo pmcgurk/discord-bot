@@ -12,6 +12,8 @@ Model.knex(knex);
 
 require('dotenv').config();
 
+const silent = process.env.SILENT;
+
 client.on('messageCreate', async (msg) => {
   try {
     const splitMessage = msg.content.split(' ');
@@ -20,8 +22,11 @@ client.on('messageCreate', async (msg) => {
       const calledCommand = commands[startsWithText.substring(1).toLowerCase()];
       if (calledCommand) {
         const response = await calledCommand(msg, splitMessage);
-        if (response) {
+        if (response && !silent) {
           msg.reply(response);
+        }
+        if (silent) {
+          console.log(`SILENT MODE: ${response}`);
         }
       }
     } else {

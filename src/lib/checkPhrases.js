@@ -1,6 +1,7 @@
 import Phrase from '../models/phrase';
 import updateBalance from '../db/updateBalance';
 import formatAmount from './formatAmount';
+import checkSentiment from './checkSentiment';
 
 export default async function checkPhrases(msg, text) {
   const UserId = msg.author.id;
@@ -10,6 +11,7 @@ export default async function checkPhrases(msg, text) {
     const note = phrase.amount > 0 ? `You have pleased the Republic: ${phrase.amount}` : `You have displeased the Republic: ${phrase.amount}`
     await updateBalance(UserId, phrase.amount, note);
   } else {
-    await updateBalance(UserId, 1);
+    const sentiment = checkSentiment(msg);
+    await updateBalance(UserId, sentiment.score);
   }
 }

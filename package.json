@@ -5,16 +5,19 @@
   "author": "Paul",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon --exec babel-node -- index.js"
+    "start": "nodemon --exec babel-node -- index.js",
+    "start:dev": "cross-env SILENT=true nodemon --exec babel-node -- index.js"
   },
   "dependencies": {
+    "cross-env": "^7.0.3",
     "discord.js": "^13.3.1",
     "dotenv": "^10.0.0",
     "knex": "^0.95.14",
     "moment": "^2.29.1",
     "nodemon": "^2.0.15",
     "objection": "^3.0.0",
-    "pg": "^8.7.1"
+    "pg": "^8.7.1",
+    "sentiment": "^5.0.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

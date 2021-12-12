@@ -1,6 +1,5 @@
 import getScoreboard from '../db/getScoreboard';
 import formatAmount from '../lib/formatAmount';
-import getUsername from '../lib/getUsername';
 
 const scoreboard = async () => {
   const currentScoreboard = await getScoreboard();
