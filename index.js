@@ -17,22 +17,24 @@ const silent = process.env.SILENT;
 
 client.on('messageCreate', async (msg) => {
   try {
-    const splitMessage = msg.content.split(' ');
-    const startsWithText = splitMessage[0];
-    if (startsWithText.charAt(0) === '!') {
-      const calledCommand = commands[startsWithText.substring(1).toLowerCase()];
-      if (calledCommand) {
-        const response = await calledCommand(msg, splitMessage);
-        if (response && !silent) {
-          msg.reply(response);
+    if (msg.author.id !== '918900485484851251') {
+      const splitMessage = msg.content.split(' ');
+      const startsWithText = splitMessage[0];
+      if (startsWithText.charAt(0) === '!') {
+        const calledCommand = commands[startsWithText.substring(1).toLowerCase()];
+        if (calledCommand) {
+          const response = await calledCommand(msg, splitMessage);
+          if (response && !silent) {
+            msg.reply(response);
+          }
+          if (silent) {
+            console.log(`SILENT MODE: ${response}`);
+          }
         }
-        if (silent) {
-          console.log(`SILENT MODE: ${response}`);
-        }
+      } else {
+        splitMessage.map(async word => checkPhrases(msg, word.toLowerCase()));
+        await checkSentiment(msg);
       }
-    } else {
-      splitMessage.map(async word => checkPhrases(msg, word.toLowerCase()));
-      await checkSentiment(msg);
     }
   } catch (err) {
     console.log(err);
