@@ -1,22 +1,33 @@
 // Import discord.js and create the client
-const Discord = require('discord.js');
-require('dotenv').config()
+import { Model } from 'objection';
+import Knex from 'knex';
+import client from './src/client';
+import commands from './src/commands';
+import knexConfig from './knexfile';
+import checkPhrases from './src/lib/checkPhrases';
 
-const { Client, Intents } = require('discord.js');
+const knex = Knex(knexConfig[process.env.NODE_ENV || 'development']);
 
-const client = new Discord.Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
+Model.knex(knex);
 
-// Register an event so that when the bot is ready, it will log a messsage to the terminal
-client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-})
+require('dotenv').config();
 
-// Register an event to handle incoming messages
-client.on('messageCreate', async msg => {
-  // Check if the message starts with '!hello' and respond with 'world!' if it does.
-  if (msg.content.startsWith("!hello")) {
-    msg.reply("world!")
+client.on('messageCreate', async (msg) => {
+  try {
+    const splitMessage = msg.content.split(' ');
+    const startsWithText = splitMessage[0];
+    if (startsWithText.charAt(0) === '!') {
+      const calledCommand = commands[startsWithText.substring(1).toLowerCase()];
+      if (calledCommand) {
+        const response = await calledCommand(msg, splitMessage);
+        if (response) {
+          msg.reply(response);
+        }
+      }
+    } else {
+      splitMessage.map(word => checkPhrases(msg, word.toLowerCase()));
+    }
+  } catch (err) {
+    console.log(err);
   }
-})
-
-client.login(process.env.TOKEN);
+});

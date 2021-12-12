@@ -1,2 +1,17 @@
+# Build
 .env
+.webpack
+build
 node_modules/
+.serverless
+
+# General
+*.log
+*.zip
+coverage/
+.nyc_output
+.DS_Store
+*.pdf
+backup.sql
+src/constants/phrases.js
+seeds/phrases.js
