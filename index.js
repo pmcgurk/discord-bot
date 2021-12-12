@@ -5,6 +5,7 @@ import client from './src/client';
 import commands from './src/commands';
 import knexConfig from './knexfile';
 import checkPhrases from './src/lib/checkPhrases';
+import checkSentiment from './src/lib/checkSentiment';
 
 const knex = Knex(knexConfig[process.env.NODE_ENV || 'development']);
 
@@ -30,7 +31,8 @@ client.on('messageCreate', async (msg) => {
         }
       }
     } else {
-      splitMessage.map(word => checkPhrases(msg, word.toLowerCase()));
+      splitMessage.map(async word => checkPhrases(msg, word.toLowerCase()));
+      await checkSentiment(msg);
     }
   } catch (err) {
     console.log(err);
