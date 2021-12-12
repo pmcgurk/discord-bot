@@ -7,6 +7,6 @@ const sentiment = new Sentiment();
 
 export default async function checkSentiment(msg) {
   const messageSentiment = sentiment.analyze(msg.content);
-  console.log(`${msg.author} said ${msg.content}, ${formatAmount(messageSentiment.score)}!`);
+  console.log(`${msg.author}: ${msg.content} (${formatAmount(messageSentiment.score || 1)})`);
   await updateBalance(msg.author.id, messageSentiment.score);
 }
