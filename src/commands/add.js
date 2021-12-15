@@ -5,7 +5,7 @@ const balance = async (msg, splitMessage) => {
   const amount = splitMessage[2];
   const result = await addPhrase(msg.author.id, phrase, amount);
   if (result) {
-    return `Added phrase "${phrase}"" for ${amount}`;
+    return `Added phrase "${phrase}" for ${amount}`;
   }
   return 'Something broked';
 };
