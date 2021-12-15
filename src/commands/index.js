@@ -6,6 +6,7 @@ import name from './name';
 import add from './add';
 import edit from './edit';
 import del from './del';
+import phrases from './phrases';
 
 const commands = {
   transfer,
@@ -16,6 +17,7 @@ const commands = {
   add,
   del,
   edit,
+  phrases,
 };
 
 export default commands;
