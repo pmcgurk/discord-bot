@@ -7,6 +7,10 @@ export default async function sendTransaction(SenderId, ReceiverId, amount, note
   try {
     const amountParsed = parseInt(amount, 10);
     const sender = await getUser(SenderId);
+    const receiver = await getUser(ReceiverId);
+    if (!receiver) {
+      throw new Error('User disnae exist. Probably deleted or you\'re just a fanny');
+    }
     if (SenderId === ReceiverId) {
       throw new Error(`M8 ye cannae send yerself ${constants.currencyNamePlural}`);
     }
